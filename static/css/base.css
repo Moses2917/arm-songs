@@ -633,19 +633,39 @@ p { margin: 0 0 1em; }
 /* themes grid */
 .themes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  gap: 0;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+.theme-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 22px;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
-  overflow: hidden;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
 }
-.theme-card { border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); }
-.theme-card a { display: flex; padding: 22px 22px; gap: 18px; align-items: baseline; transition: background .14s var(--ease); }
-.theme-card a:hover { background: var(--paper); }
-.theme-card .tn { font-family: var(--font-lyric); font-weight: 700; color: var(--ink-faint); font-size: 1.1rem; min-width: 30px; }
-.theme-card .tnm { font-family: var(--font-lyric); font-weight: 700; font-size: 1.08rem; line-height: 1.3; }
-.theme-card .cnt { display: block; font-family: var(--font-ui); font-size: 0.76rem; font-weight: 500; color: var(--ink-soft); margin-top: 4px; letter-spacing: 0.04em; }
+.theme-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--rule-strong);
+}
+.theme-card .tn {
+  font-family: var(--font-lyric);
+  font-weight: 700;
+  color: var(--ink-faint);
+  font-size: 1.5rem;
+  line-height: 1;
+  min-width: 34px;
+  font-variant-numeric: tabular-nums;
+}
+.theme-card .tnm { font-family: var(--font-lyric); font-weight: 700; font-size: 1.12rem; line-height: 1.3; }
+.theme-card .tarrow { color: var(--ink-faint); font-size: 1.1rem; transition: transform .2s var(--ease), color .2s var(--ease); }
+.theme-card:hover .tarrow { transform: translateX(4px); color: var(--ink); }
 
 /* ---------- Song detail (lyrics) ---------- */
 .song-layout { padding: 36px 0 90px; }

@@ -3,20 +3,17 @@
 {% block content %}
 <section class="container">
   <div class="page-head">
+    <p class="eyebrow">Կարմիր Երգարան</p>
     <h1>Թեմաներ</h1>
-    <p class="sub">29 թեմատիկ բաժիններ · Կարմիր Երգարան</p>
+    <p class="sub">Երգերը դասավորված ըստ 29 թեմատիկ բաժինների</p>
   </div>
   <div class="themes-grid">
     {% for t in themes %}
-      <div class="theme-card">
-        <a href="{% url 'hymns:theme_detail' t.number %}">
-          <span class="tn">{{ t.number }}</span>
-          <span>
-            <span class="tnm">{{ t.name }}</span>
-            <span class="cnt">{{ t.count }} երգ</span>
-          </span>
-        </a>
-      </div>
+      <a class="theme-card" href="{% url 'hymns:theme_detail' t.number %}">
+        <span class="tn">{{ t.number }}</span>
+        <span class="tnm">{{ t.name }}</span>
+        <span class="tarrow" aria-hidden="true">→</span>
+      </a>
     {% endfor %}
   </div>
 </section>

@@ -58,10 +58,7 @@ def tsank_number(request):
 
 def themes_list(request):
     themes = Theme.objects.all()
-    annotated = []
-    for t in themes:
-        annotated.append({"number": t.number, "name": t.name, "count": t.songs.count()})
-    return render(request, "hymns/themes_list.html", {"themes": annotated})
+    return render(request, "hymns/themes_list.html", {"themes": themes})
 
 
 def theme_detail(request, number):
