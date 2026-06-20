@@ -24,6 +24,17 @@
           <button type="submit">Որոնել</button>
         </form>
       </div>
+      <div class="account">
+        {% if user.is_authenticated %}
+          <span class="account-who">{{ user.email|default:"Հաշիվ" }}</span>
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="account-btn">Ելք</button>
+          </form>
+        {% else %}
+          <a class="account-btn" href="{% url 'account_login' %}">Մուտք</a>
+        {% endif %}
+      </div>
     </div>
   </header>
 
@@ -39,8 +50,17 @@
 
   <footer class="site-footer">
     <div class="inner">
-      <span>© {% now "Y" %} Հայ Երգարան</span>
-      <span>Կարմիր Երգարան · Word Songs</span>
+      <div class="foot-brand">
+        <span class="foot-name">Հայ Երգարան</span>
+        <small>Armenian Pentecostal Hymns</small>
+      </div>
+      <nav class="foot-nav">
+        <a href="{% url 'hymns:tsank_number' %}">Ցանկ</a>
+        <a href="{% url 'hymns:themes_list' %}">Թեմաներ</a>
+        <a href="{% url 'hymns:alpha_index' %}">Այբենական</a>
+        <a href="{% url 'hymns:search' %}">Որոնում</a>
+      </nav>
+      <span class="foot-copy">© {% now "Y" %} · Կարմիր Երգարան · Word Songs</span>
     </div>
   </footer>
 
