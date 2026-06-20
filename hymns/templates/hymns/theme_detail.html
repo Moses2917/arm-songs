@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block nav_themes %}active{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="page-head">
+    <a class="back-link" href="{% url 'hymns:themes_list' %}">← Բոլոր թեմաները</a>
+    <h1>{{ theme.name }}</h1>
+    <p class="sub">Թեմա {{ theme.number }} · {{ songs|length }} երգ</p>
+  </div>
+
+  {% if songs %}
+  <ul class="song-list">
+    {% for s in songs %}
+      <li><a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+        <span class="num">{{ s.number }}</span>
+        <span class="ttl">{{ s.display_title }}</span>
+      </a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p class="empty">Այս թեմայում երգեր չկան (դեռ)։</p>
+  {% endif %}
+</section>
+{% endblock %}

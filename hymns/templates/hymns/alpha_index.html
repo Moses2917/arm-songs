@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block nav_az %}active{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="page-head">
+    <h1>Այբենական</h1>
+    <p class="sub">Երգերը ըստ սկզբնատառի</p>
+  </div>
+
+  <div class="book-switch">
+    <a href="{% url 'hymns:alpha_index' %}?book=New" class="{% if book == 'New' %}active{% endif %}">Կարմիր Երգարան</a>
+    <a href="{% url 'hymns:alpha_index' %}?book=Old" class="{% if book == 'Old' %}active{% endif %}">Word Songs</a>
+  </div>
+
+  <div class="az-rail">
+    {% for letter in letters %}
+      <a href="{% url 'hymns:alpha_letter' letter=letter %}?book={{ book }}">{{ letter }}</a>
+    {% endfor %}
+  </div>
+  <p class="empty">Ընտրեք տառը՝ երգերը դասավորված տեսնելու համար։</p>
+</section>
+{% endblock %}

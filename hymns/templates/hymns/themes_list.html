@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block nav_themes %}active{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="page-head">
+    <h1>Թեմաներ</h1>
+    <p class="sub">29 թեմատիկ բաժիններ · Կարմիր Երգարան</p>
+  </div>
+  <div class="themes-grid">
+    {% for t in themes %}
+      <div class="theme-card">
+        <a href="{% url 'hymns:theme_detail' t.number %}">
+          <span class="tn">{{ t.number }}</span>
+          <span>
+            <span class="tnm">{{ t.name }}</span>
+            <span class="cnt">{{ t.count }} երգ</span>
+          </span>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Հայ Երգարան — Armenian Pentecostal Hymns{% endblock %}</title>
+  <meta name="description" content="{% block desc %}Browse, search and read Armenian Pentecostal worship lyrics — Կարմիր Երգարան (New) and Word Songs (Old).{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{% url 'hymns:home' %}">Հայ Երգարան<small>Armenian Hymns</small></a>
+      <nav class="nav">
+        <a href="{% url 'hymns:tsank_number' %}" class="{% block nav_tsank %}{% endblock %}">Դասականգ</a>
+        <a href="{% url 'hymns:themes_list' %}" class="{% block nav_themes %}{% endblock %}">Թեմաներ</a>
+        <a href="{% url 'hymns:alpha_index' %}" class="{% block nav_az %}{% endblock %}">Այբենական</a>
+      </nav>
+      <div class="searchbar">
+        <form action="{% url 'hymns:search' %}" method="get" role="search">
+          <input type="search" name="q" placeholder="Որոնել երգ..." aria-label="Search">
+          <button type="submit">Որոնել</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  {% if messages %}
+    <div class="msgs">
+      {% for message in messages %}
+        <div class="msg">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+  <footer class="site-footer">
+    <div class="inner">
+      <span>© {% now "Y" %} Հայ Երգարան</span>
+      <span>Կարմիր Երգարան · Word Songs</span>
+    </div>
+  </footer>
+
+  {% block js %}{% endblock %}
+</body>
+</html>

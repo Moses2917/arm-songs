@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="song-layout container read">
+  <a class="back-link" href="javascript:history.back()">← Հետ</a>
+
+  <div class="song-meta-top">
+    <span class="badge {% if song.book == 'New' %}new{% else %}old{% endif %}">
+      {% if song.book == 'New' %}Կարմիր Երգարան{% else %}Word Songs{% endif %}
+    </span>
+    <span class="badge">{{ song.book_label|slice:":3" }} №{{ song.number }}</span>
+  </div>
+
+  <h1 class="song-title">{{ song.display_title }}</h1>
+  {% if show_translit and title_lat %}<p class="song-title-lat">{{ title_lat }}</p>{% endif %}
+
+  <div class="lyric-card">
+    {% if verses %}
+      {% for v in verses %}
+        <div class="verse {% if v.refrain %}refrain{% endif %}">
+          {% for line in v.lines %}
+            <span class="line">{% if forloop.first and v.num %}<span class="vnum">{{ v.num }}.</span>{% endif %}{{ line }}</span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="empty">Երգի բառերը դեռ հասանելի չեն։</p>
+    {% endif %}
+  </div>
+
+  <div class="song-tools">
+    {% if show_translit %}
+      <a class="btn primary on" href="{% url 'hymns:song_detail' book=song.book|lower number=song.number %}">Տառադարձումը անջատել</a>
+    {% else %}
+      <a class="btn primary" href="{% url 'hymns:song_detail' book=song.book|lower number=song.number %}?translit=1">Տառադարձել (Latin)</a>
+    {% endif %}
+    <button class="btn" type="button" id="copy-btn" data-lyrics="{{ song.lyrics|escapejs }}">Պատճենել</button>
+    <button class="btn" type="button" onclick="window.print()">Տպել</button>
+  </div>
+
+  {% if matched %}
+    <div class="match-card">
+      <span class="lbl">Համապատասխան երգ</span>
+      <p style="margin:6px 0 0;">
+        <a href="{% url 'hymns:song_detail' book=matched.book|lower number=matched.number %}">
+          <strong>{% if matched.book == 'New' %}Կարմիր Երգարան{% else %}Word Songs{% endif %}</strong> №{{ matched.number }} — {{ matched.display_title }}
+        </a>
+      </p>
+    </div>
+  {% endif %}
+
+  {% if song.key or song.speed or song.style or song.song_type or song.time_sig %}
+  <div class="meta-strip">
+    {% if song.key %}<div class="m"><b>Տոնայնություն</b>{{ song.key }}</div>{% endif %}
+    {% if song.speed %}<div class="m"><b>Տեմպ</b>{{ song.speed }}</div>{% endif %}
+    {% if song.style %}<div class="m"><b>Ոճ</b>{{ song.style }}</div>{% endif %}
+    {% if song.song_type %}<div class="m"><b>Տեսակ</b>{{ song.song_type }}</div>{% endif %}
+    {% if song.time_sig %}<div class="m"><b>Չափ</b>{{ song.time_sig }}</div>{% endif %}
+  </div>
+  {% endif %}
+</article>
+
+<script>
+document.getElementById('copy-btn')?.addEventListener('click', function () {
+  const raw = this.dataset.lyrics.replace(/\\n/g, '\n');
+  navigator.clipboard.writeText(raw).then(() => {
+    const old = this.textContent; this.textContent = 'Պատճենվեց ✓';
+    setTimeout(() => { this.textContent = old; }, 1600);
+  });
+});
+</script>
+{% endblock %}

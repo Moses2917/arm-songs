@@ -1,0 +1,15 @@
+[Unit]
+Description=django-q2 cluster (in-app scheduler) for arm_songs
+After=network.target gunicorn.service
+
+[Service]
+User=arm
+Group=www-data
+WorkingDirectory=/srv/arm_songs
+EnvironmentFile=/srv/arm_songs/.env
+ExecStart=/srv/arm_songs/.venv/bin/python manage.py qcluster
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

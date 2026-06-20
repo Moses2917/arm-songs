@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block nav_tsank %}active{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="page-head">
+    <h1>Դասականգ</h1>
+    <p class="sub">Համարակալված երգեր · {{ book_label }}</p>
+  </div>
+
+  <div class="book-switch">
+    <a href="?book=New" class="{% if book == 'New' %}active{% endif %}">Կարմիր Երգարան</a>
+    <a href="?book=Old" class="{% if book == 'Old' %}active{% endif %}">Word Songs</a>
+  </div>
+
+  {% if page.object_list %}
+  <ul class="song-list">
+    {% for s in page.object_list %}
+      <li><a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+        <span class="num">{{ s.number }}</span>
+        <span class="ttl">{{ s.display_title }}</span>
+      </a></li>
+    {% endfor %}
+  </ul>
+
+  {% include "hymns/_pagination.html" %}
+  {% else %}
+    <p class="empty">Արդյունք չկա։</p>
+  {% endif %}
+</section>
+{% endblock %}

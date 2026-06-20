@@ -1,0 +1,5 @@
+Django==5.0.7
+django-allauth==0.63.3
+django-q2==1.6.2
+gunicorn==22.0.0
+python-docx==1.1.2

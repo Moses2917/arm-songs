@@ -1,0 +1,18 @@
+[Unit]
+Description=Gunicorn daemon for Armenian Hymns (arm_songs)
+After=network.target
+
+[Service]
+User=arm
+Group=www-data
+WorkingDirectory=/srv/arm_songs
+EnvironmentFile=/srv/arm_songs/.env
+ExecStart=/srv/arm_songs/.venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/srv/arm_songs/run/arm_songs.sock \
+    arm_songs.wsgi:application
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

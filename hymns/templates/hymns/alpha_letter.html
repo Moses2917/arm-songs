@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block nav_az %}active{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="page-head">
+    <a class="back-link" href="{% url 'hymns:alpha_index' %}?book={{ book }}">← Այբենական</a>
+    <h1>«{{ letter }}»</h1>
+    <p class="sub">{{ book_label }}</p>
+  </div>
+
+  <div class="book-switch">
+    <a href="{% url 'hymns:alpha_letter' letter=letter %}?book=New" class="{% if book == 'New' %}active{% endif %}">Կարմիր Երգարան</a>
+    <a href="{% url 'hymns:alpha_letter' letter=letter %}?book=Old" class="{% if book == 'Old' %}active{% endif %}">Word Songs</a>
+  </div>
+
+  <div class="az-rail">
+    {% for l in letters %}
+      <a href="{% url 'hymns:alpha_letter' letter=l %}?book={{ book }}" class="{% if l == letter %}active{% endif %}">{{ l }}</a>
+    {% endfor %}
+  </div>
+
+  {% if page.object_list %}
+  <ul class="song-list">
+    {% for s in page.object_list %}
+      <li><a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+        <span class="num">{{ s.number }}</span>
+        <span class="ttl">{{ s.display_title }}</span>
+      </a></li>
+    {% endfor %}
+  </ul>
+  {% include "hymns/_pagination.html" %}
+  {% else %}
+    <p class="empty">«{{ letter }}» տառով երգեր չկան այս ժողովածուում։</p>
+  {% endif %}
+</section>
+{% endblock %}

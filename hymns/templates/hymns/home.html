@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero container">
+  <h1>Հայ Ավետարանական երգեր</h1>
+  <p class="lede">Ընթերցեք, որոնեք և թերթեք հայ հոգեւոր երգերի բառերը՝ Կարմիր Երգարան (նոր) և Word Songs (հին) ժողովածուներից։</p>
+
+  <div class="home-search">
+    <form action="{% url 'hymns:search' %}" method="get">
+      <input type="search" name="q" placeholder="Որոնել վերնագրով, տողով կամ համարով..." aria-label="Search songs">
+      <button type="submit">Որոնել</button>
+    </form>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="n">{{ counts.new }}</div><div class="l">Կարմիր Երգարան (New)</div></div>
+    <div class="stat-card"><div class="n">{{ counts.old }}</div><div class="l">Word Songs (Old)</div></div>
+    <div class="stat-card"><div class="n">29</div><div class="l">Թեմաներ</div></div>
+  </div>
+</section>
+
+<section class="container" style="padding-bottom:40px;">
+  <div class="entries">
+    <a class="entry" href="{% url 'hymns:tsank_number' %}?book=New"><h3>Դասականգ</h3><p>Համարակալված երգեր</p></a>
+    <a class="entry" href="{% url 'hymns:themes_list' %}"><h3>Թեմաներ</h3><p>29 թեմատիկ բաժիններ</p></a>
+    <a class="entry" href="{% url 'hymns:alpha_index' %}?book=New"><h3>Այբենական</h3><p>Ա-ից մինչև Օ</p></a>
+    <a class="entry" href="{% url 'hymns:search' %}"><h3>Որոնում</h3><p>Գտիր քո երգը</p></a>
+  </div>
+</section>
+{% endblock %}
