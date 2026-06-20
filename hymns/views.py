@@ -23,11 +23,21 @@ def _numeric():
 
 
 def home(request):
+    new_qs = Song.objects.filter(book=Song.BOOK_NEW)
+    old_qs = Song.objects.filter(book=Song.BOOK_OLD)
     counts = {
-        "new": Song.objects.filter(book=Song.BOOK_NEW).count(),
-        "old": Song.objects.filter(book=Song.BOOK_OLD).count(),
+        "new": new_qs.count(),
+        "old": old_qs.count(),
+        "themes": Theme.objects.count(),
     }
-    return render(request, "hymns/home.html", {"counts": counts})
+    featured = (
+        Song.objects.only("book", "number", "title_display", "title")
+        .order_by("?")[:6]
+    )
+    return render(request, "hymns/home.html", {
+        "counts": counts,
+        "featured": featured,
+    })
 
 
 def tsank_number(request):

@@ -1,29 +1,92 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero container">
-  <h1>Հայ Ավետարանական երգեր</h1>
-  <p class="lede">Ընթերցեք, որոնեք և թերթեք հայ հոգեւոր երգերի բառերը՝ Կարմիր Երգարան (նոր) և Word Songs (հին) ժողովածուներից։</p>
 
-  <div class="home-search">
-    <form action="{% url 'hymns:search' %}" method="get">
-      <input type="search" name="q" placeholder="Որոնել վերնագրով, տողով կամ համարով..." aria-label="Search songs">
+<section class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Armenian Pentecostal Hymnal</p>
+    <h1 class="hero-title">Հայ Ավետարանական երգեր</h1>
+    <p class="hero-lede">Ընթերցեք, որոնեք և թերթեք հայ հոգևոր երգերի բառերը՝ Կարմիր Երգարան (նոր) և Word Songs (հին) ժողովածուներից։</p>
+
+    <form class="hero-search" action="{% url 'hymns:search' %}" method="get" role="search">
+      <input type="search" name="q" placeholder="Որոնել վերնագրով, տողով կամ համարով..." aria-label="Որոնել երգ">
       <button type="submit">Որոնել</button>
     </form>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-card"><div class="n">{{ counts.new }}</div><div class="l">Կարմիր Երգարան (New)</div></div>
-    <div class="stat-card"><div class="n">{{ counts.old }}</div><div class="l">Word Songs (Old)</div></div>
-    <div class="stat-card"><div class="n">29</div><div class="l">Թեմաներ</div></div>
+    <p class="hero-hint">Կամ թերթեք երգարանը ներքևի բաժիններից</p>
   </div>
 </section>
 
-<section class="container" style="padding-bottom:40px;">
-  <div class="entries">
-    <a class="entry" href="{% url 'hymns:tsank_number' %}?book=New"><h3>Ցանկ</h3><p>Համարակալված երգեր</p></a>
-    <a class="entry" href="{% url 'hymns:themes_list' %}"><h3>Թեմաներ</h3><p>29 թեմատիկ բաժիններ</p></a>
-    <a class="entry" href="{% url 'hymns:alpha_index' %}?book=New"><h3>Այբենական</h3><p>Ա-ից մինչև Օ</p></a>
-    <a class="entry" href="{% url 'hymns:search' %}"><h3>Որոնում</h3><p>Գտիր քո երգը</p></a>
+<section class="container home-section">
+  <div class="section-head">
+    <div>
+      <h2>Թերթել երգարանը</h2>
+      <p class="sub">Ընտրեք ձեր նախընտրած ձևը</p>
+    </div>
+  </div>
+  <div class="browse-grid">
+    <a class="browse-card" href="{% url 'hymns:tsank_number' %}?book=New">
+      <span class="browse-mark">ժ</span>
+      <h3>Ցանկ</h3>
+      <p>Համարակալված երգեր</p>
+    </a>
+    <a class="browse-card" href="{% url 'hymns:themes_list' %}">
+      <span class="browse-mark">թ</span>
+      <h3>Թեմաներ</h3>
+      <p>{{ counts.themes }} թեմատիկ բաժիններ</p>
+    </a>
+    <a class="browse-card" href="{% url 'hymns:alpha_index' %}?book=New">
+      <span class="browse-mark">Ա</span>
+      <h3>Այբենական</h3>
+      <p>Ա-ից մինչև Օ</p>
+    </a>
   </div>
 </section>
+
+<section class="books-band">
+  <div class="container home-section">
+    <div class="section-head center">
+      <div>
+        <p class="eyebrow">Երկու ժողովածու</p>
+        <h2>Մեկ երգարան, երկու գիրք</h2>
+      </div>
+    </div>
+    <div class="books-grid">
+      <a class="book-card new" href="{% url 'hymns:tsank_number' %}?book=New">
+        <span class="book-tag">Նոր</span>
+        <h3>Կարմիր Երգարան</h3>
+        <p class="book-en">Red Hymnal</p>
+        <p class="book-desc">Ժամանակակից հավաքածուն՝ թեմատիկ բաժիններով և երաժշտական նշումներով (տեմպ, լադ, ոճ)։</p>
+        <span class="book-count">{{ counts.new }} <small>երգ</small></span>
+      </a>
+      <a class="book-card old" href="{% url 'hymns:tsank_number' %}?book=Old">
+        <span class="book-tag">Հին</span>
+        <h3>Word Songs</h3>
+        <p class="book-en">Old Collection</p>
+        <p class="book-desc">Ավանդական ժողովածուն՝ իր հարյուրավոր երգերով, որոնցից շատերը համապատասխանում են նոր գրքին։</p>
+        <span class="book-count">{{ counts.old }} <small>երգ</small></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="container home-section">
+  <div class="section-head">
+    <div>
+      <h2>Ընտրված երգեր</h2>
+      <p class="sub">Ամեն այցից նոր ընտրանի</p>
+    </div>
+    <a class="link" href="{% url 'hymns:home' %}">↻ Թարմացնել</a>
+  </div>
+  <ul class="featured-list">
+    {% for s in featured %}
+      <li>
+        <a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+          <span class="num">{{ s.number }}</span>
+          <span class="ttl">{{ s.display_title }}</span>
+          <span class="book-mini {% if s.book == 'New' %}new{% endif %}">{{ s.book_label }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
 {% endblock %}
