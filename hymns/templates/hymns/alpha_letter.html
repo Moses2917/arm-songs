@@ -4,8 +4,9 @@
 <section class="container">
   <div class="page-head">
     <a class="back-link" href="{% url 'hymns:alpha_index' %}?book={{ book }}">← Այբենական</a>
+    <p class="eyebrow">{{ book_label }}</p>
     <h1>«{{ letter }}»</h1>
-    <p class="sub">{{ book_label }}</p>
+    <p class="sub">{{ page.paginator.count }} երգ</p>
   </div>
 
   <div class="book-switch">

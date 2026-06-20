@@ -73,9 +73,13 @@ def theme_detail(request, number):
 
 
 def alpha_index(request):
+    book = request.GET.get("book", Song.BOOK_NEW)
+    if book not in (Song.BOOK_NEW, Song.BOOK_OLD):
+        book = Song.BOOK_NEW
     return render(request, "hymns/alpha_index.html", {
         "letters": ARMENIAN_LETTERS,
-        "book": request.GET.get("book", Song.BOOK_NEW),
+        "book": book,
+        "book_label": dict(Song.BOOK_CHOICES)[book],
     })
 
 
