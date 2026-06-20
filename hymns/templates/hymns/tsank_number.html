@@ -4,12 +4,16 @@
 <section class="container">
   <div class="page-head">
     <h1>Ցանկ</h1>
-    <p class="sub">Համարակալված երգեր · {{ book_label }}</p>
+    <p class="sub">Համարակալված երգեր · {{ book_label }} · {{ page.paginator.count }} երգ</p>
   </div>
 
   <div class="book-switch">
     <a href="?book=New" class="{% if book == 'New' %}active{% endif %}">Կարմիր Երգարան</a>
     <a href="?book=Old" class="{% if book == 'Old' %}active{% endif %}">Word Songs</a>
+  </div>
+
+  <div class="list-filter">
+    <input type="search" data-filter-target=".song-list" placeholder="Ֆիլտրել ցանկում…" aria-label="Ֆիլտրել ցանկը">
   </div>
 
   {% if page.object_list %}
