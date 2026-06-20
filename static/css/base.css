@@ -581,6 +581,50 @@ p { margin: 0 0 1em; }
 .list-filter input:focus { border-color: var(--ink); box-shadow: 0 0 0 4px var(--accent-soft); }
 .filter-empty { text-align: center; color: var(--ink-soft); padding: 40px 0; margin: 0; }
 
+/* search form (search page) */
+.search-form { margin-bottom: 28px; }
+.search-inputs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-pill);
+  padding: 7px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+}
+.search-inputs:focus-within { border-color: var(--ink); box-shadow: var(--shadow-sm), 0 0 0 4px var(--accent-soft); }
+.search-inputs input[type="search"] {
+  flex: 1;
+  min-width: 180px;
+  border: none;
+  background: transparent;
+  padding: 11px 18px;
+  font-family: var(--font-ui);
+  font-size: 0.98rem;
+  color: var(--ink);
+  outline: none;
+}
+.search-inputs input[type="search"]::placeholder { color: var(--ink-faint); }
+.search-inputs select {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  padding: 9px 16px;
+  background: var(--paper);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+.search-inputs button { margin-left: auto; }
+
+.result-meta { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 14px; }
+
+.suggest { margin-top: 8px; }
+.suggest-lbl { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px; }
+
 /* Song list (tsank / alpha) */
 .song-list {
   list-style: none;

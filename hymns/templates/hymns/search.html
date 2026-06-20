@@ -3,36 +3,54 @@
 <section class="container">
   <div class="page-head">
     <h1>Որոնում</h1>
-    <p class="sub">
-      <form method="get" style="display:inline-flex; gap:8px; margin-top:10px; max-width:560px;">
-        <input type="search" name="q" value="{{ q }}" placeholder="Վերնագիր, տող կամ համար..." style="flex:1; border:1px solid var(--rule-strong); border-radius:var(--radius); padding:11px 14px; font-family:var(--font-ui); outline:none;">
-        <select name="book" style="border:1px solid var(--rule-strong); border-radius:var(--radius); padding:0 10px; font-family:var(--font-ui); background:var(--surface);">
-          <option value="">Երկուսն էլ</option>
-          <option value="New" {% if book == 'New' %}selected{% endif %}>Կարմիր Երգարան</option>
-          <option value="Old" {% if book == 'Old' %}selected{% endif %}>Word Songs</option>
-        </select>
-        <button class="btn primary" type="submit">Որոնել</button>
-      </form>
-    </p>
+    <p class="sub">Վերնագրով, տողով կամ համարով</p>
   </div>
+
+  <form class="search-form" method="get" role="search">
+    <div class="search-inputs">
+      <input type="search" name="q" value="{{ q }}" placeholder="Օրինակ՝ սուրբ, փառք, 12…" aria-label="Որոնել երգ">
+      <select name="book" aria-label="Ընտրել ժողովածուն">
+        <option value="">Երկուսն էլ</option>
+        <option value="New" {% if book == 'New' %}selected{% endif %}>Կարմիր Երգարան</option>
+        <option value="Old" {% if book == 'Old' %}selected{% endif %}>Word Songs</option>
+      </select>
+      <button class="btn primary" type="submit">Որոնել</button>
+    </div>
+  </form>
 
   {% if has_query %}
     {% if page.object_list %}
-      <ul class="song-list">
+      <p class="result-meta">Գտնվեց {{ count }} երգ</p>
+      <ul class="featured-list">
         {% for s in page.object_list %}
-          <li><a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
-            <span class="num">{{ s.number }}</span>
-            <span class="ttl">{{ s.display_title }}
-              <span class="badge {% if s.book == 'New' %}new{% else %}old{% endif %}" style="margin-left:8px; font-size:0.62rem; padding:2px 8px;">
-                {% if s.book == 'New' %}New{% else %}Old{% endif %}
-              </span>
-            </span>
-          </a></li>
+          <li>
+            <a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+              <span class="num">{{ s.number }}</span>
+              <span class="ttl">{{ s.display_title }}</span>
+              <span class="book-mini {% if s.book == 'New' %}new{% endif %}">{{ s.book_label }}</span>
+            </a>
+          </li>
         {% endfor %}
       </ul>
       {% include "hymns/_pagination.html" %}
     {% else %}
       <p class="empty">«{{ q }}»-ին համապատասխան երգ չգտնվեց։</p>
+      {% if suggestions %}
+        <div class="suggest">
+          <p class="suggest-lbl">Գուցե նկատի ունեիք՝</p>
+          <ul class="featured-list">
+            {% for s in suggestions %}
+              <li>
+                <a href="{% url 'hymns:song_detail' book=s.book|lower number=s.number %}">
+                  <span class="num">{{ s.number }}</span>
+                  <span class="ttl">{{ s.display_title }}</span>
+                  <span class="book-mini {% if s.book == 'New' %}new{% endif %}">{{ s.book_label }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
     {% endif %}
   {% else %}
     <p class="empty">Մուտքագրեք բառ՝ որոնելու համար։</p>

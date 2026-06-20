@@ -106,6 +106,7 @@ def search(request):
     q = request.GET.get("q", "").strip()
     book = request.GET.get("book", "")
     results = Song.objects.none()
+    suggestions = []
     if q:
         qs = Song.objects.filter(
             Q(title__icontains=q) | Q(lyrics__icontains=q) | Q(number__icontains=q)
@@ -118,8 +119,24 @@ def search(request):
             .only("book", "number", "title_display", "title")
         )
     page = Paginator(results, PER_PAGE).get_page(request.GET.get("page"))
+
+    # Did-you-mean: on no hits, offer loose title matches (across both books).
+    if q and not page.object_list:
+        tokens = [t for t in re.split(r"\W+", q) if len(t) >= 2]
+        loose = Song.objects.none()
+        for tok in tokens:
+            loose |= Song.objects.filter(title__icontains=tok)
+        seen = set()
+        for s in loose.annotate(num=_numeric()).order_by("num")[:8]:
+            key = (s.book, s.number)
+            if key in seen:
+                continue
+            seen.add(key)
+            suggestions.append(s)
+
     return render(request, "hymns/search.html", {
         "page": page, "q": q, "book": book, "has_query": bool(q),
+        "count": page.paginator.count, "suggestions": suggestions,
     })
 
 
