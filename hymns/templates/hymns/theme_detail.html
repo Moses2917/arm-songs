@@ -4,8 +4,13 @@
 <section class="container">
   <div class="page-head">
     <a class="back-link" href="{% url 'hymns:themes_list' %}">← Բոլոր թեմաները</a>
+    <p class="eyebrow">Թեմա {{ theme.number }}</p>
     <h1>{{ theme.name }}</h1>
-    <p class="sub">Թեմա {{ theme.number }} · {{ songs|length }} երգ</p>
+    <p class="sub">{{ songs|length }} երգ</p>
+  </div>
+
+  <div class="list-filter">
+    <input type="search" data-filter-target=".song-list" placeholder="Ֆիլտրել ցանկում…" aria-label="Ֆիլտրել ցանկը">
   </div>
 
   {% if songs %}
