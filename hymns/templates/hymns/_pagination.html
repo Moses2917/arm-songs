@@ -1,17 +1,28 @@
+{% load hymns_extras %}
 {% if page.has_other_pages %}
+{% with total=page.paginator.num_pages cur=page.number keep=request.GET.urlencode|qs_without_page %}
 <nav class="pagination" aria-label="Pagination">
   {% if page.has_previous %}
-    <a href="?page={{ page.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}">‹</a>
+    <a class="pg-arrow" href="?page={{ page.previous_page_number }}{% if keep %}&{{ keep }}{% endif %}" aria-label="Նախորդ">‹</a>
   {% else %}
-    <span class="disabled">‹</span>
+    <span class="pg-arrow disabled" aria-hidden="true">‹</span>
   {% endif %}
 
-  <span class="current">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+  {% for n in page.paginator.page_range %}
+    {% if n == 1 or n == total %}
+      <a class="pg-num {% if n == cur %}current{% endif %}" href="?page={{ n }}{% if keep %}&{{ keep }}{% endif %}">{{ n }}</a>
+    {% elif n >= cur|add:"-1" and n <= cur|add:"1" %}
+      <a class="pg-num {% if n == cur %}current{% endif %}" href="?page={{ n }}{% if keep %}&{{ keep }}{% endif %}">{{ n }}</a>
+    {% elif n == cur|add:"-2" or n == cur|add:"2" %}
+      <span class="pg-ellipsis" aria-hidden="true">…</span>
+    {% endif %}
+  {% endfor %}
 
   {% if page.has_next %}
-    <a href="?page={{ page.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}">›</a>
+    <a class="pg-arrow" href="?page={{ page.next_page_number }}{% if keep %}&{{ keep }}{% endif %}" aria-label="Հաջորդ">›</a>
   {% else %}
-    <span class="disabled">›</span>
+    <span class="pg-arrow disabled" aria-hidden="true">›</span>
   {% endif %}
 </nav>
+{% endwith %}
 {% endif %}
