@@ -783,9 +783,18 @@ p { margin: 0 0 1em; }
 .lyric-card > * { position: relative; z-index: 1; }
 
 .verse { margin: 0 0 1.4em; font-family: var(--font-lyric); font-size: 1.18rem; line-height: 1.85; }
+.verse.lead { font-size: 1.3rem; margin-bottom: 1.6em; }
 .verse .vnum { display: inline-block; min-width: 1.6em; font-weight: 700; color: var(--ink-faint); }
 .verse .line { display: block; }
-.verse.refrain { font-style: italic; color: var(--ink-soft); border-left: 2px solid var(--rule-strong); padding-left: 18px; margin-left: -2px; }
+.verse.refrain {
+  font-style: italic;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--ink);
+  padding: 2px 0 2px 20px;
+  margin-left: -2px;
+  background: linear-gradient(90deg, var(--paper-deep), transparent 60%);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
 
 .song-tools { display: flex; gap: 8px; align-items: center; margin-top: 26px; flex-wrap: wrap; }
 .btn {
