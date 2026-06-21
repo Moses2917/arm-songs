@@ -1,11 +1,11 @@
 """
-Scheduled tasks for django-q2 (in-app scheduler).
+Scheduled tasks for the in-app scheduler.
 
-Run the worker cluster alongside gunicorn:
-    python manage.py qcluster
+The scheduler is a small threading-based loop started by:
+    python manage.py run_scheduler
 
-Then register the periodic importer once:
-    python manage.py setup_scheduler
+It periodically calls `scheduled_import` below so that dropped-in JSON
+data refreshes the database.
 """
 import logging
 

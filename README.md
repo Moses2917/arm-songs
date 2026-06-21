@@ -20,9 +20,9 @@ lyrics from two collections:
 - Email/password accounts via django-allauth
 
 ## Stack
-Django + SQLite · django-allauth · django-q2 (in-app scheduler) ·
-Gunicorn behind Nginx. Typography: GHEA Mariam (serif) + GHEA Grapalat
-(sans), self-hosted.
+Django + SQLite · django-allauth · a tiny threading-based in-app
+scheduler (`run_scheduler` management command) · Gunicorn behind Nginx.
+Typography: GHEA Mariam (serif) + GHEA Grapalat (sans), self-hosted.
 
 ## Layout
 The project is intentionally flat — `manage.py` and the `arm_songs/`
@@ -36,7 +36,7 @@ arm_songs/
   data/                 # JSON source data (imported into SQLite)
   templates/            # base layout
   static/               # css, fonts, js
-  deploy/               # gunicorn / qcluster / nginx / env configs
+  deploy/               # gunicorn / scheduler / nginx / env configs
 ```
 
 ## Local development
@@ -60,21 +60,25 @@ duplicate numbers) and links New-book songs to the 29 themes. The
 DOCX-ready path (`hymns/importer.py::import_docx_file`) will ingest real
 `.docx` files laid out as `[songnum] [lyrics]` once they are available.
 
-### In-app scheduler (django-q2)
+### In-app scheduler (threading)
+A single background thread re-runs the importer on a fixed interval — no
+extra database tables, no separate worker cluster.
 ```bash
-python manage.py setup_scheduler --minutes 30   # register once
-python manage.py qcluster                       # run the worker (foreground/dev)
+python manage.py run_scheduler              # foreground, every 30 min
+python manage.py run_scheduler --minutes 15 # custom interval
+python manage.py run_scheduler --once       # single run, then exit
 ```
-In production `qcluster` runs as its own service (see `deploy/qcluster.service`).
+In production `run_scheduler` runs as its own service (see
+`deploy/scheduler.service`).
 
 ## Production deploy
 ```bash
 sudo cp deploy/gunicorn.service /etc/systemd/system/
-sudo cp deploy/qcluster.service /etc/systemd/system/
+sudo cp deploy/scheduler.service /etc/systemd/system/
 sudo cp deploy/nginx.conf /etc/nginx/sites-available/arm_songs
 sudo ln -s /etc/nginx/sites-available/arm_songs /etc/nginx/sites-enabled/
 python manage.py collectstatic --noinput
-sudo systemctl enable --now gunicorn qcluster
+sudo systemctl enable --now gunicorn scheduler
 sudo systemctl reload nginx
 ```
 Edit `deploy/*.service` and `deploy/nginx.conf` to match your paths/domain,
