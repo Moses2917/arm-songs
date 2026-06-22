@@ -1,5 +1,5 @@
 [Unit]
-Description=django-q2 cluster (in-app scheduler) for arm_songs
+Description=In-app scheduler (threading-based) for arm_songs
 After=network.target gunicorn.service
 
 [Service]
@@ -7,7 +7,7 @@ User=arm
 Group=www-data
 WorkingDirectory=/srv/arm_songs
 EnvironmentFile=/srv/arm_songs/.env
-ExecStart=/srv/arm_songs/.venv/bin/python manage.py qcluster
+ExecStart=/srv/arm_songs/.venv/bin/python manage.py run_scheduler --minutes 30
 Restart=on-failure
 RestartSec=5
 

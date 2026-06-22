@@ -31,8 +31,6 @@ INSTALLED_APPS = [
     # auth
     "allauth",
     "allauth.account",
-    # task queue (in-app scheduler)
-    "django_q",
     # local
     "hymns",
 ]
@@ -105,18 +103,6 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
-
-# django-q2 (in-app scheduler, ORM broker)
-Q_CLUSTER = {
-    "name": "armsongs",
-    "workers": 2,
-    "recycle": 500,
-    "timeout": 90,
-    "retry": 120,
-    "queue_limit": 50,
-    "bulk": 4,
-    "orm": "default",
-}
 
 # Email (console in dev; override in prod via env)
 EMAIL_BACKEND = os.environ.get(
